@@ -1,0 +1,25 @@
+{
+  "name": "teste-de-software-aponti",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pauloricardoxp/Teste-de-Software-Aponti.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/pauloricardoxp/Teste-de-Software-Aponti/issues"
+  },
+  "homepage": "https://github.com/pauloricardoxp/Teste-de-Software-Aponti#readme",
+  "devDependencies": {
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}
