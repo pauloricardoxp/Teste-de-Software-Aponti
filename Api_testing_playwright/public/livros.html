@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Livros - Biblioteca</title>
+    <link rel="stylesheet" href="/css/estilo.css" />
+  </head>
+  <body>
+    <header id="cabecalho"></header>
+
+    <main>
+      <h1 data-testid="livros-titulo-pagina">Livros</h1>
+
+      <div class="mensagem sucesso" data-testid="mensagem-sucesso" role="status" hidden></div>
+      <div class="mensagem erro" data-testid="mensagem-erro" role="alert" hidden></div>
+
+      <form class="filtros" data-testid="filtros-form">
+        <div class="campo">
+          <label for="filtro-autor">Autor</label>
+          <input id="filtro-autor" type="text" placeholder="Ex.: Machado" data-testid="filtro-autor" />
+        </div>
+        <div class="campo">
+          <label for="filtro-disponivel">Disponibilidade</label>
+          <select id="filtro-disponivel" data-testid="filtro-disponivel">
+            <option value="">Todos</option>
+            <option value="true">Disponíveis</option>
+            <option value="false">Indisponíveis</option>
+          </select>
+        </div>
+        <button type="submit" data-testid="filtro-aplicar">Filtrar</button>
+      </form>
+
+      <table data-testid="livros-tabela">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Disponibilidade</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-testid="livros-corpo-tabela"></tbody>
+      </table>
+
+      <p class="vazio" data-testid="livros-vazio" hidden>Nenhum livro encontrado.</p>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/layout.js"></script>
+    <script src="/js/livros.js"></script>
+  </body>
+</html>

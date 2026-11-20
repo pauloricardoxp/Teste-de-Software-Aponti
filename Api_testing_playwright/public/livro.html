@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhe do livro - Biblioteca</title>
+    <link rel="stylesheet" href="/css/estilo.css" />
+  </head>
+  <body>
+    <header id="cabecalho"></header>
+
+    <main>
+      <p><a href="/livros" data-testid="voltar-livros">&larr; Voltar para a lista</a></p>
+
+      <div class="mensagem sucesso" data-testid="mensagem-sucesso" role="status" hidden></div>
+      <div class="mensagem erro" data-testid="mensagem-erro" role="alert" hidden></div>
+
+      <section data-testid="livro-detalhe" hidden>
+        <h1 data-testid="livro-titulo"></h1>
+
+        <dl class="detalhes">
+          <dt>Autor</dt>
+          <dd data-testid="livro-autor"></dd>
+
+          <dt>ISBN</dt>
+          <dd data-testid="livro-isbn"></dd>
+
+          <dt>Ano de publicação</dt>
+          <dd data-testid="livro-ano"></dd>
+
+          <dt>Exemplares disponíveis</dt>
+          <dd data-testid="livro-quantidade-disponivel"></dd>
+
+          <dt>Situação</dt>
+          <dd data-testid="livro-disponibilidade"></dd>
+        </dl>
+
+        <button type="button" data-testid="botao-emprestar">Emprestar</button>
+      </section>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/layout.js"></script>
+    <script src="/js/livro.js"></script>
+  </body>
+</html>

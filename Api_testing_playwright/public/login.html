@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Biblioteca</title>
+    <link rel="stylesheet" href="/css/estilo.css" />
+  </head>
+  <body>
+    <header><span class="marca">Biblioteca</span></header>
+
+    <main>
+      <form class="formulario-login" data-testid="login-form" novalidate>
+        <h1 data-testid="login-titulo">Entrar</h1>
+
+        <div class="mensagem sucesso" data-testid="mensagem-sucesso" role="status" hidden></div>
+        <div class="mensagem erro" data-testid="mensagem-erro" role="alert" hidden></div>
+
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username" data-testid="login-email" />
+        </div>
+
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input id="senha" name="senha" type="password" autocomplete="current-password" data-testid="login-senha" />
+        </div>
+
+        <button type="submit" data-testid="login-submit">Entrar</button>
+      </form>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

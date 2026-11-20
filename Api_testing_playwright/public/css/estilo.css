@@ -1,0 +1,184 @@
+/* Visual simples e sem animações/transições, para não atrapalhar os testes. */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #1f2933;
+  background: #f5f7fa;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+  background: #1f3a5f;
+  color: #fff;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+header nav {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+.marca {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.area-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+main {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #d9e2ec;
+  border-radius: 6px;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #bcccdc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background: #2f6fb5;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #9aa5b1;
+  cursor: not-allowed;
+}
+
+.botao-secundario {
+  background: #fff;
+  color: #1f3a5f;
+}
+
+.campo {
+  margin-bottom: 16px;
+}
+
+.formulario-login {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.filtros {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.filtros .campo {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #d9e2ec;
+}
+
+th {
+  background: #f0f4f8;
+}
+
+.mensagem {
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.mensagem.sucesso {
+  background: #e3f9e5;
+  color: #1f6d2a;
+  border: 1px solid #8ed49a;
+}
+
+.mensagem.erro {
+  background: #ffe3e3;
+  color: #a61b1b;
+  border: 1px solid #f29b9b;
+}
+
+.status-disponivel,
+.status-ativo {
+  color: #1f6d2a;
+  font-weight: 600;
+}
+
+.status-indisponivel {
+  color: #a61b1b;
+  font-weight: 600;
+}
+
+.status-devolvido {
+  color: #616e7c;
+}
+
+.detalhes dt {
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.detalhes dd {
+  margin: 0 0 8px 0;
+}
+
+.vazio {
+  color: #616e7c;
+  font-style: italic;
+}
+
+[hidden] {
+  display: none !important;
+}

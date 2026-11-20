@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meus empréstimos - Biblioteca</title>
+    <link rel="stylesheet" href="/css/estilo.css" />
+  </head>
+  <body>
+    <header id="cabecalho"></header>
+
+    <main>
+      <h1 data-testid="emprestimos-titulo-pagina">Meus empréstimos</h1>
+
+      <div class="mensagem sucesso" data-testid="mensagem-sucesso" role="status" hidden></div>
+      <div class="mensagem erro" data-testid="mensagem-erro" role="alert" hidden></div>
+
+      <table data-testid="emprestimos-tabela">
+        <thead>
+          <tr>
+            <th>Livro</th>
+            <th>Autor</th>
+            <th>Data do empréstimo</th>
+            <th>Data da devolução</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody data-testid="emprestimos-corpo-tabela"></tbody>
+      </table>
+
+      <p class="vazio" data-testid="emprestimos-vazio" hidden>Você não possui empréstimos.</p>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/layout.js"></script>
+    <script src="/js/meus-emprestimos.js"></script>
+  </body>
+</html>
