@@ -1,0 +1,13 @@
+{
+  "name": "crud-api-jsonplaceholder",
+  "version": "1.0.0",
+  "description": "Atividade de CRUD usando a API JSONPlaceholder",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
