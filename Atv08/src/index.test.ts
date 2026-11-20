@@ -1,234 +1,70 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
+import { CartPage } from "./pages/CartPage.js";
+import { ProductPage } from "./pages/ProductPage.js";
+import { UserPage } from "./pages/UserPage.js";
 
-const loja = "https://serverest.dev";
+const userPage = new UserPage();
+const productPage = new ProductPage();
+const cartPage = new CartPage();
 
+async function createAuthenticatedUser(): Promise<string> {
+  const email = `teste${Date.now()}@teste.com`;
+  const password = "1234";
+
+  const registration = await userPage.register(email, password);
+  expect(registration.status).toBe(201);
+
+  const login = await userPage.login(email, password);
+  expect(login.response.status).toBe(200);
+
+  return login.token;
+}
+
+async function createProduct(token: string): Promise<string> {
+  const product = await productPage.create(token);
+  expect(product.response.status).toBe(201);
+
+  return product.id;
+}
 
 test("Adicionar 3 unidades no carrinho e conferir o estoque", async () => {
-  const email = `teste${Date.now()}@teste.com`;
-  const senha = "1234";
+  const token = await createAuthenticatedUser();
+  const productId = await createProduct(token);
 
-  const cadastro = await fetch(`${loja}/usuarios`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nome: "Teste",
-      email,
-      password: senha,
-      administrador: "true",
-    }),
-  });
+  const cart = await cartPage.addProduct(productId, 3, token);
+  expect(cart.status).toBe(201);
 
-  expect(cadastro.status).toBe(201);
+  const product = await productPage.get(productId);
+  expect(product.status).toBe(200);
 
-  const login = await fetch(`${loja}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password: senha }),
-  });
-
-  expect(login.status).toBe(200);
-
-  const dadosLogin = (await login.json()) as {
-    authorization: string;
-  };
-  const token = dadosLogin.authorization;
-
-  const produto = await fetch(`${loja}/produtos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      nome: `Produto ${Date.now()}`,
-      preco: 100,
-      descricao: "Produto de teste",
-      quantidade: 10,
-    }),
-  });
-
-  expect(produto.status).toBe(201);
-
-  const dadosProduto = (await produto.json()) as { _id: string };
-  const idProduto = dadosProduto._id;
-
-  const carrinho = await fetch(`${loja}/carrinhos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      produtos: [{ idProduto, quantidade: 3 }],
-    }),
-  });
-
-  expect(carrinho.status).toBe(201);
-
-  const consulta = await fetch(`${loja}/produtos/${idProduto}`);
-  expect(consulta.status).toBe(200);
-
-  const produtoAtualizado = (await consulta.json()) as {
-    quantidade: number;
-  };
-
-  expect(produtoAtualizado.quantidade).toBe(7);
+  const updatedProduct = (await product.json()) as { quantidade: number };
+  expect(updatedProduct.quantidade).toBe(7);
 }, 15000);
-
-
 
 test("Cancelar a compra e devolver o estoque", async () => {
-  const email = `teste${Date.now()}@teste.com`;
-  const senha = "1234";
+  const token = await createAuthenticatedUser();
+  const productId = await createProduct(token);
 
-  const cadastro = await fetch(`${loja}/usuarios`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nome: "Teste",
-      email,
-      password: senha,
-      administrador: "true",
-    }),
-  });
+  const cart = await cartPage.addProduct(productId, 3, token);
+  expect(cart.status).toBe(201);
 
-  expect(cadastro.status).toBe(201);
+  const cancellation = await cartPage.cancelPurchase(token);
+  expect(cancellation.status).toBe(200);
 
-  const login = await fetch(`${loja}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password: senha }),
-  });
+  const product = await productPage.get(productId);
+  expect(product.status).toBe(200);
 
-  expect(login.status).toBe(200);
-
-  const dadosLogin = (await login.json()) as {
-    authorization: string;
-  };
-  const token = dadosLogin.authorization;
-
-  const produto = await fetch(`${loja}/produtos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      nome: `Produto ${Date.now()}`,
-      preco: 100,
-      descricao: "Produto de teste",
-      quantidade: 10,
-    }),
-  });
-
-  expect(produto.status).toBe(201);
-
-  const dadosProduto = (await produto.json()) as { _id: string };
-  const idProduto = dadosProduto._id;
-
-  const carrinho = await fetch(`${loja}/carrinhos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      produtos: [{ idProduto, quantidade: 3 }],
-    }),
-  });
-
-  expect(carrinho.status).toBe(201);
-
-  const cancelamento = await fetch(
-    `${loja}/carrinhos/cancelar-compra`,
-    {
-      method: "DELETE",
-      headers: { Authorization: token },
-    }
-  );
-
-  expect(cancelamento.status).toBe(200);
-
-  const consulta = await fetch(`${loja}/produtos/${idProduto}`);
-  expect(consulta.status).toBe(200);
-
-  const produtoAtualizado = (await consulta.json()) as {
-    quantidade: number;
-  };
-
-  expect(produtoAtualizado.quantidade).toBe(10);
+  const updatedProduct = (await product.json()) as { quantidade: number };
+  expect(updatedProduct.quantidade).toBe(10);
 }, 15000);
 
-
 test("Não permitir excluir um produto que está no carrinho", async () => {
-  const email = `teste${Date.now()}@teste.com`;
-  const senha = "1234";
+  const token = await createAuthenticatedUser();
+  const productId = await createProduct(token);
 
-  const cadastro = await fetch(`${loja}/usuarios`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nome: "Teste",
-      email,
-      password: senha,
-      administrador: "true",
-    }),
-  });
+  const cart = await cartPage.addProduct(productId, 1, token);
+  expect(cart.status).toBe(201);
 
-  expect(cadastro.status).toBe(201);
-
-  const login = await fetch(`${loja}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password: senha }),
-  });
-
-  expect(login.status).toBe(200);
-
-  const dadosLogin = (await login.json()) as {
-    authorization: string;
-  };
-  const token = dadosLogin.authorization;
-
-  const produto = await fetch(`${loja}/produtos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      nome: `Produto ${Date.now()}`,
-      preco: 100,
-      descricao: "Produto de teste",
-      quantidade: 10,
-    }),
-  });
-
-  expect(produto.status).toBe(201);
-
-  const dadosProduto = (await produto.json()) as { _id: string };
-  const idProduto = dadosProduto._id;
-
-  const carrinho = await fetch(`${loja}/carrinhos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      produtos: [{ idProduto, quantidade: 1 }],
-    }),
-  });
-
-  expect(carrinho.status).toBe(201);
-
-  const apagarProduto = await fetch(
-    `${loja}/produtos/${idProduto}`,
-    {
-      method: "DELETE",
-      headers: { Authorization: token },
-    }
-  );
-
-  expect(apagarProduto.status).toBe(400);
+  const deletion = await productPage.delete(productId, token);
+  expect(deletion.status).toBe(400);
 }, 15000);
